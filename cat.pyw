@@ -51,7 +51,7 @@ while True:
     sc.fill((0, 255, 0))
     sc.blit(cat, (0,0))
 
-    mouse_pos = (mouse_max_pos_x-(mouse_x//40 + W//5), mouse_max_pos_y-(mouse_y//40 - H//9))
+    mouse_pos = (mouse_max_pos_x-(mouse_x//30 + W//5), mouse_max_pos_y-(mouse_y//30 - H//9))
 
     sc.blit(mouse_img, mouse_pos)
 
