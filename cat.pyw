@@ -1,12 +1,14 @@
 import pygame
 from pynput import keyboard, mouse
+import os
+
+os.chdir("\\".join(__file__.split("\\")[:-1]))
 
 W, H = (612, 354)
-FPS = 25
+FPS = 30
 
 sc = pygame.display.set_mode((W, H))
 pygame.display.set_caption("Bongo Cat ~by aqur1n~")
-
 
 clock = pygame.time.Clock()
 
