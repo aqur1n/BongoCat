@@ -1,65 +1,96 @@
 import pygame
 from pynput import keyboard, mouse
-import os
+from os import chdir
 
-os.chdir("\\".join(__file__.split("\\")[:-1]))
 
-W, H = (612, 354)
+chdir("\\".join(__file__.split("\\")[:-1]))
+
+WINDOW_W, WINDOW_H = (612, 354)
+MOUSE_MAX_POS_X, MOUSE_MAX_POS_Y = (WINDOW_W // 3, WINDOW_H // 2)
 FPS = 30
 
-sc = pygame.display.set_mode((W, H))
-pygame.display.set_caption("Bongo Cat ~by aqur1n~")
 
-clock = pygame.time.Clock()
+class Textures:
+    def __init__(self) -> None:
+        self.cat = pygame.image.load('textures/mousebg.png')
+        self.mouse = pygame.image.load('textures/mouse.png')
 
-cat = pygame.image.load('textures/mousebg.png')
-mouse_img = pygame.image.load('textures/mouse.png')
+        self.keyboard_up = pygame.image.load('textures/up.png')
+        self.keyboard_press = pygame.image.load('textures/left.png')
 
-pygame.display.set_icon(cat)
+class BongoCat:
+    def __init__(self) -> None:
+        self.running = True
+        self.keyboard_pressed = False
+        self.mouse_pos = (0, 0)
 
-left_press, left = (pygame.image.load('textures/left.png'), pygame.image.load('textures/up.png'))
+        self.textures = Textures()
+        self.clock = pygame.time.Clock()
 
-mouse_max_pos_x, mouse_max_pos_y = (W // 3,H // 2)
+    def create_window(self) -> None:
+        self.surface = pygame.display.set_mode((WINDOW_W, WINDOW_H))
 
-changed = False
+        pygame.display.set_icon(self.textures.cat)
+        pygame.display.set_caption("Bongo Cat ~by aqur1n~")
 
-mouse_x = mouse_y = 0
+    def process_events(self) -> None:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
-def on_key_down(k):
-    global changed
-    changed = True
+    def on_mouse_move(self, x: int, y: int) -> None:
+        self.mouse_pos = (x, y)
 
-def on_key_up(k):
-    global changed
-    changed = False
+    def on_key_down(self, key) -> None:
+        self.keyboard_pressed = True
 
-def mouse_move(x, y):
-    global mouse_x, mouse_y
-    mouse_x, mouse_y = (x, y)
+    def on_key_up(self, key) -> None:
+        self.keyboard_pressed = False
 
-keyboard_listener = keyboard.Listener(
-    on_press=on_key_down,
-    on_release=on_key_up)
+    def run(self) -> None:
+        self.running = True
 
-mouse_listener = mouse.Listener(
-    on_move=mouse_move)
+        self.create_window()
 
-keyboard_listener.start()
-mouse_listener.start()
+        keyboard_listener = keyboard.Listener(
+            on_press = self.on_key_down,
+            on_release = self.on_key_up
+        )
+        mouse_listener = mouse.Listener(on_move = self.on_mouse_move)
 
-while True:
-    clock.tick(FPS)
+        keyboard_listener.start()
+        mouse_listener.start()
 
-    sc.fill((0, 255, 0))
-    sc.blit(cat, (0,0))
+        try:
+            while self.running:
+                self.surface.fill((0, 255, 0))
+                self.surface.blit(self.textures.cat, (0,0))
 
-    mouse_pos = (mouse_max_pos_x-(mouse_x//30 + W//5), mouse_max_pos_y-(mouse_y//30 - H//9))
+                self.surface.blit(
+                    self.textures.mouse, 
+                    (
+                        MOUSE_MAX_POS_X - (self.mouse_pos[0] // 30 + WINDOW_W // 5), 
+                        MOUSE_MAX_POS_Y - (self.mouse_pos[1] // 30 - WINDOW_H // 9)
+                    )
+                )
+                self.surface.blit(
+                    self.textures.keyboard_press if self.keyboard_pressed else self.textures.keyboard_up, 
+                    (0, 0)
+                )
 
-    sc.blit(mouse_img, mouse_pos)
+                pygame.display.update()
 
-    [exit() if i.type == pygame.QUIT else ... for i in pygame.event.get()]
+                self.process_events()
+                self.clock.tick(FPS)
+        finally:
+            keyboard_listener.stop()
+            mouse_listener.stop()
 
-    if not changed: sc.blit(left, (0,0))
-    else: sc.blit(left_press, (0,0))
+def main() -> None:
+    pygame.init()
 
-    pygame.display.update()
+    cat = BongoCat()
+    cat.run()
+
+if __name__ == "__main__":
+    main()

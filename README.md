@@ -2,14 +2,13 @@
 Bongo cat in python! Good for streaming.
 
 ## Installation
-1. Install `python 3`
-2. Open console and write:
+1. Download branch `master` to your PC
+2. Install `python 3`
+3. Open console and write:
 ```
-pip install pygame
-pip install pynput
+python3 -m pip install -r %Full path to requirements.txt%
 ```
-3. Download branch `master` to your PC
-4. Open `cat.pyw`
+1. Open `cat.pyw`
 
 ![](https://user-images.githubusercontent.com/60589309/227712764-ad201dfb-cf6f-4147-9562-9b3efbb22437.png)
 
