@@ -14,3 +14,11 @@ python3 -m pip install -r %Full path to requirements.txt%
 
 ## IF IT DOESN'T WORK
 Change the file extension `cat.pyw` to `.py` and open. Contact me with an error in the console.
+
+<a href="https://www.star-history.com/#aqur1n/BongoCat&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=aqur1n/BongoCat&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=aqur1n/BongoCat&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=aqur1n/BongoCat&type=Date" />
+ </picture>
+</a>
